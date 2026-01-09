@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fridge Chef - Recipe Suggester</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>🍳 Fridge Chef</h1>
+                <p class="tagline">Turn your ingredients into delicious meals</p>
+            </div>
+        </header>
+
+        <main>
+            <section class="ingredient-section">
+                <h2>What's in your fridge?</h2>
+
+                <div class="search-box">
+                    <input
+                        type="text"
+                        id="ingredient-search"
+                        placeholder="Search ingredients..."
+                        autocomplete="off"
+                    >
+                    <div id="suggestions" class="suggestions"></div>
+                </div>
+
+                <div id="selected-ingredients" class="selected-ingredients">
+                    <div class="empty-state">
+                        <span class="empty-icon">🥕</span>
+                        <p>Start adding ingredients to find recipes!</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="recipes-section">
+                <div class="section-header">
+                    <h2>Recipe Suggestions</h2>
+                    <div class="recipe-count" id="recipe-count"></div>
+                </div>
+
+                <div id="recipes-container" class="recipes-container">
+                    <div class="empty-state">
+                        <span class="empty-icon">👨‍🍳</span>
+                        <p>Add some ingredients and I'll suggest delicious recipes!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="recipe-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">&times;</button>
+            <div id="recipe-details"></div>
+        </div>
+    </div>
+
+    <script src="recipes.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
