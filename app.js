@@ -1,11 +1,13 @@
 // App State
 let selectedIngredients = new Set();
+let selectedStaples = new Set();
 let currentRecipes = [];
 
 // DOM Elements
 const ingredientSearch = document.getElementById('ingredient-search');
 const suggestionsContainer = document.getElementById('suggestions');
 const selectedIngredientsContainer = document.getElementById('selected-ingredients');
+const staplesGrid = document.getElementById('staples-grid');
 const recipesContainer = document.getElementById('recipes-container');
 const recipeCount = document.getElementById('recipe-count');
 const modal = document.getElementById('recipe-modal');
@@ -14,6 +16,7 @@ const recipeDetails = document.getElementById('recipe-details');
 // Initialize
 function init() {
     setupEventListeners();
+    renderStaplesGrid();
     updateRecipes();
 }
 
@@ -45,6 +48,36 @@ function setupEventListeners() {
             closeModal();
         }
     });
+}
+
+// Render Staples Grid
+function renderStaplesGrid() {
+    staplesGrid.innerHTML = STAPLES_AND_SPICES.map(staple => `
+        <div class="staple-checkbox" id="staple-${staple.replace(/\s+/g, '-')}">
+            <input
+                type="checkbox"
+                id="checkbox-${staple.replace(/\s+/g, '-')}"
+                onchange="toggleStaple('${staple}')"
+            >
+            <label for="checkbox-${staple.replace(/\s+/g, '-')}">${capitalizeFirst(staple)}</label>
+        </div>
+    `).join('');
+}
+
+// Toggle Staple
+function toggleStaple(staple) {
+    const checkbox = document.getElementById(`checkbox-${staple.replace(/\s+/g, '-')}`);
+    const container = document.getElementById(`staple-${staple.replace(/\s+/g, '-')}`);
+
+    if (checkbox.checked) {
+        selectedStaples.add(staple);
+        container.classList.add('checked');
+    } else {
+        selectedStaples.delete(staple);
+        container.classList.remove('checked');
+    }
+
+    updateRecipes();
 }
 
 // Search and Autocomplete
@@ -137,7 +170,9 @@ function updateSelectedIngredients() {
 
 // Recipe Matching and Display
 function updateRecipes() {
-    if (selectedIngredients.size === 0) {
+    const allAvailableIngredients = new Set([...selectedIngredients, ...selectedStaples]);
+
+    if (allAvailableIngredients.size === 0) {
         recipesContainer.innerHTML = `
             <div class="empty-state">
                 <span class="empty-icon">👨‍🍳</span>
@@ -150,14 +185,16 @@ function updateRecipes() {
 
     // Find matching recipes and calculate match scores
     const recipesWithScores = RECIPES_DATABASE.map(recipe => {
-        const matchingIngredients = recipe.ingredients.filter(ing =>
-            selectedIngredients.has(ing)
+        const recipeIngredientNames = recipe.ingredients.map(ing => ing[0]);
+
+        const matchingIngredients = recipeIngredientNames.filter(ing =>
+            allAvailableIngredients.has(ing)
         );
-        const missingIngredients = recipe.ingredients.filter(ing =>
-            !selectedIngredients.has(ing)
+        const missingIngredients = recipeIngredientNames.filter(ing =>
+            !allAvailableIngredients.has(ing)
         );
 
-        const matchScore = (matchingIngredients.length / recipe.ingredients.length) * 100;
+        const matchScore = (matchingIngredients.length / recipeIngredientNames.length) * 100;
 
         return {
             ...recipe,
@@ -184,7 +221,7 @@ function updateRecipes() {
 
     recipeCount.textContent = `${recipesWithScores.length} recipe${recipesWithScores.length !== 1 ? 's' : ''} found`;
 
-    recipesContainer.innerHTML = recipesWithScores.map(recipe => `
+    recipesContainer.innerHTML = recipesWithScores.slice(0, 100).map(recipe => `
         <div class="recipe-card" onclick="showRecipeDetails(${recipe.id})">
             <div class="recipe-image">${recipe.image}</div>
             <div class="match-score">${Math.round(recipe.matchScore)}% match</div>
@@ -211,7 +248,9 @@ function showRecipeDetails(recipeId) {
 
     if (!recipe) return;
 
-    const hasAllIngredients = recipe.missingIngredients ? recipe.missingIngredients.length === 0 : false;
+    const allAvailableIngredients = new Set([...selectedIngredients, ...selectedStaples]);
+    const hasAllIngredients = recipe.missingIngredients ? recipe.missingIngredients.length === 0 :
+                               recipe.ingredients.every(ing => allAvailableIngredients.has(ing[0]));
     const matchScore = recipe.matchScore || 0;
 
     recipeDetails.innerHTML = `
@@ -242,18 +281,23 @@ function showRecipeDetails(recipeId) {
                 <h3>Ingredients</h3>
                 <ul>
                     ${recipe.ingredients.map(ing => {
-                        const hasIngredient = selectedIngredients.has(ing);
-                        return `<li style="${hasIngredient ? 'background: #E8F5E9;' : ''}">${capitalizeFirst(ing)}${hasIngredient ? ' ✓' : ''}</li>`;
+                        const [name, quantity] = ing;
+                        const hasIngredient = allAvailableIngredients.has(name);
+                        return `<li style="${hasIngredient ? 'background: #E8F5E9;' : ''}">
+                            <strong>${quantity}</strong> ${capitalizeFirst(name)}${hasIngredient ? ' ✓' : ''}
+                        </li>`;
                     }).join('')}
                 </ul>
             </div>
 
-            <div class="instructions-list">
-                <h3>Instructions</h3>
-                <ol>
-                    ${recipe.instructions.map(step => `<li>${step}</li>`).join('')}
-                </ol>
-            </div>
+            ${recipe.instructions ? `
+                <div class="instructions-list">
+                    <h3>Instructions</h3>
+                    <ol>
+                        ${recipe.instructions.map(step => `<li>${step}</li>`).join('')}
+                    </ol>
+                </div>
+            ` : ''}
 
             ${recipe.missingIngredients && recipe.missingIngredients.length > 0 ? `
                 <div style="background: #FFF3E0; padding: 15px; border-radius: 10px; margin-top: 20px;">
@@ -286,3 +330,4 @@ if (document.readyState === 'loading') {
 // Make functions globally accessible for onclick handlers
 window.removeIngredient = removeIngredient;
 window.showRecipeDetails = showRecipeDetails;
+window.toggleStaple = toggleStaple;

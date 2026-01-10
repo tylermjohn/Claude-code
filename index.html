@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fridge Chef - Recipe Suggester</title>
+    <title>Claude's Cookbook - Recipe Suggester</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
             <div class="header-content">
-                <h1>🍳 Fridge Chef</h1>
-                <p class="tagline">Turn your ingredients into delicious meals</p>
+                <div class="claude-logo">
+                    <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" fill="#CC785C"/>
+                        <path d="M 30 45 Q 50 25 70 45" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <circle cx="38" cy="42" r="4" fill="white"/>
+                        <circle cx="62" cy="42" r="4" fill="white"/>
+                        <path d="M 35 60 Q 50 70 65 60" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <path d="M 20 35 Q 25 20 35 25" stroke="#CC785C" stroke-width="8" fill="none" stroke-linecap="round"/>
+                        <path d="M 80 35 Q 75 20 65 25" stroke="#CC785C" stroke-width="8" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h1>Claude's Cookbook</h1>
+                <p class="tagline">Turn your ingredients into delicious meals ✨</p>
             </div>
         </header>
 
@@ -34,6 +45,12 @@
                         <span class="empty-icon">🥕</span>
                         <p>Start adding ingredients to find recipes!</p>
                     </div>
+                </div>
+
+                <div class="staples-section">
+                    <h3>Staples & Spices</h3>
+                    <p class="staples-subtitle">Check the basics you have in your pantry</p>
+                    <div id="staples-grid" class="staples-grid"></div>
                 </div>
             </section>
 

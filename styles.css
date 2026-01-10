@@ -61,6 +61,38 @@ header::before {
 .header-content {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.claude-logo {
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.claude-logo svg {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    animation: wiggle 3s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 h1 {
@@ -264,6 +296,65 @@ h2 {
     text-align: center;
     padding: 40px 20px;
     color: var(--text-light);
+}
+
+/* Staples Section */
+.staples-section {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 2px solid #E0E0E0;
+}
+
+.staples-section h3 {
+    color: var(--text-dark);
+    margin-bottom: 5px;
+    font-size: 1.3em;
+}
+
+.staples-subtitle {
+    color: var(--text-light);
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.staples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.staple-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #F5F5F5;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.staple-checkbox:hover {
+    background: #E8E8E8;
+    transform: translateX(2px);
+}
+
+.staple-checkbox input[type="checkbox"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--secondary-color);
+}
+
+.staple-checkbox.checked {
+    background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+}
+
+.staple-checkbox label {
+    cursor: pointer;
+    flex: 1;
+    font-size: 0.9em;
 }
 
 .empty-icon {
