@@ -48,6 +48,10 @@ function setupEventListeners() {
             closeModal();
         }
     });
+
+    // Check all staples button
+    const checkAllBtn = document.getElementById('check-all-staples');
+    checkAllBtn.addEventListener('click', toggleAllStaples);
 }
 
 // Render Staples Grid
@@ -78,6 +82,47 @@ function toggleStaple(staple) {
     }
 
     updateRecipes();
+    updateCheckAllButton();
+}
+
+// Toggle All Staples
+function toggleAllStaples() {
+    const checkAllBtn = document.getElementById('check-all-staples');
+    const allChecked = selectedStaples.size === STAPLES_AND_SPICES.length;
+
+    if (allChecked) {
+        // Uncheck all
+        STAPLES_AND_SPICES.forEach(staple => {
+            const checkbox = document.getElementById(`checkbox-${staple.replace(/\s+/g, '-')}`);
+            const container = document.getElementById(`staple-${staple.replace(/\s+/g, '-')}`);
+            checkbox.checked = false;
+            container.classList.remove('checked');
+        });
+        selectedStaples.clear();
+        checkAllBtn.textContent = 'Check All';
+    } else {
+        // Check all
+        STAPLES_AND_SPICES.forEach(staple => {
+            const checkbox = document.getElementById(`checkbox-${staple.replace(/\s+/g, '-')}`);
+            const container = document.getElementById(`staple-${staple.replace(/\s+/g, '-')}`);
+            checkbox.checked = true;
+            container.classList.add('checked');
+            selectedStaples.add(staple);
+        });
+        checkAllBtn.textContent = 'Uncheck All';
+    }
+
+    updateRecipes();
+}
+
+// Update Check All Button Text
+function updateCheckAllButton() {
+    const checkAllBtn = document.getElementById('check-all-staples');
+    if (selectedStaples.size === STAPLES_AND_SPICES.length) {
+        checkAllBtn.textContent = 'Uncheck All';
+    } else {
+        checkAllBtn.textContent = 'Check All';
+    }
 }
 
 // Search and Autocomplete

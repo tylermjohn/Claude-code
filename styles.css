@@ -305,6 +305,13 @@ h2 {
     border-top: 2px solid #E0E0E0;
 }
 
+.staples-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
 .staples-section h3 {
     color: var(--text-dark);
     margin-bottom: 5px;
@@ -314,7 +321,29 @@ h2 {
 .staples-subtitle {
     color: var(--text-light);
     font-size: 0.9em;
-    margin-bottom: 15px;
+    margin-bottom: 0;
+}
+
+.check-all-btn {
+    background: linear-gradient(135deg, var(--secondary-color), #45B7AA);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.check-all-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.check-all-btn:active {
+    transform: translateY(0);
 }
 
 .staples-grid {
