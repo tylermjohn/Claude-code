@@ -1,0 +1,26 @@
+{
+  "name": "finance-agent-harness",
+  "version": "1.0.0",
+  "description": "Finance agent harness for Claude with budgeting, project planning, and derivatives trading tools",
+  "main": "core/agent.js",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/test-suite.js",
+    "example:budget": "node examples/budget-assistant.js",
+    "example:project": "node examples/project-evaluator.js",
+    "example:trading": "node examples/trading-advisor.js"
+  },
+  "keywords": [
+    "finance",
+    "claude",
+    "ai-agent",
+    "budgeting",
+    "derivatives",
+    "project-planning"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1"
+  }
+}
